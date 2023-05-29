@@ -1,17 +1,17 @@
-import React, { useState, Component, useEffect } from 'react';
+import React from 'react';
 import { withIronSession } from "next-iron-session";
-import { useRouter } from 'next/router';
-import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,InputLabel,List, ListItem,ListItemText,Divider,Paper,
-    AppBar,Toolbar,IconButton,Icon, Button, CssBaseline, TextField, FormControlLabel, Checkbox ,Grid,Box, Typography} from '@material-ui/core';
-
-import {Print, ViewModule} from '@material-ui/icons/';
+import { Button,Grid, Typography} from '@mui/material';
+import {Print, ViewModule} from '@mui/icons-material';
 import  Link from 'next/link';
 import Header from "./components/Header";
 
-import fire from '../config/fire-config';
-
 const PrivatePage = ({ user }) => {
 
+  const style = {
+    txtD:{
+      textDecoration:'none'
+    }
+  };
 
     return(
    
@@ -23,40 +23,42 @@ const PrivatePage = ({ user }) => {
       rel="stylesheet"></link>
 
 <Header/>
-<div style={{margin:"10vw 0 0 30vw"}}>
-          <Grid container spacing={3}>  
+<div >
+          <Grid container spacing={3}> 
+
+              <Grid item xs={12} ></Grid>
+              <Grid item xs={12} ></Grid>
+              <Grid item xs={1} sm={1}></Grid>
              
-              <Grid item xs={12} lg={3}>
+              <Grid item xs={4} sm={4}>
                 <Link href="/lotes">
                  
                   <Button  style={{padding:"0"}} variant="contained" color="primary">
                        <ViewModule style={{padding:"0" ,fontSize:"8vw"}}/>
                   </Button>
                 </Link>
-                <Link href="/lotes">
+                <Link href="/lotes" style={style.txtD}>
                   <Typography align="left" color="primary" variant="h4" component="h2">
                       Lotes
                     </Typography>
                   </Link>
                  
               </Grid>
-              <Grid item xs={12} lg={3}>
-                <Link href="/relatorios">
-                  <>
+              <Grid item xs={3} sm={3}>
+                  
+                <Link href="/relatorios" style={style.txtD}>
                   <Button  style={{padding:"0"}} variant="contained" color="primary">
                        <Print style={{fontSize:"8vw"}}/>
                        
                   </Button>
+                </Link>
+                <Link href="/relatorios" style={style.txtD}>
                     <Typography align="left" color="primary" variant="h4" component="h2">
                         Relatórios
                       </Typography> 
-                  </>
+                
                   </Link>
               </Grid>
-             
-
-
-
           </Grid>
 </div>
           

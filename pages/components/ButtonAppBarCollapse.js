@@ -1,10 +1,13 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { Menu } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import HomeIcon from "@material-ui/icons/Home";
+import { withStyles } from "@mui/material/styles";
+import { Menu } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import HomeIcon from "@mui/icons-material/Home";
 
-const styles = theme => ({
+import { styled } from '@mui/system';
+
+
+const styles = (theme) => ({
   buttonCollapse: {
     [theme.breakpoints.up("sm")]: {
       display: "none"
@@ -29,33 +32,35 @@ class ButtonAppBarCollapse extends React.Component {
     this.setState({ anchorEl: null });
   };
   render() {
-    const { classes } = this.props;
+  //  const { styles } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
     return (
-      <div className={classes.buttonCollapse}>
-        <IconButton onClick={this.handleMenu}>
-          <HomeIcon />
-        </IconButton>
-        <Menu
-          id="menu-appbar"
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-          open={open}
-          onClose={this.handleClose}
-        >
-          {this.props.children}
-        </Menu>
-      </div>
+      
+          <div sx={styles.buttonCollapse}>
+            <IconButton onClick={this.handleMenu}>
+              <HomeIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              open={open}
+              onClose={this.handleClose}
+            >
+              {this.props.children}
+            </Menu>
+          </div>
+      
     );
   }
 }
-export default withStyles(styles)(ButtonAppBarCollapse);
+export default (ButtonAppBarCollapse);

@@ -1,10 +1,10 @@
-import React, { useState, Component, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { withIronSession } from "next-iron-session";
-import {makeStyles,Button, TextField, Grid, Typography} from '@material-ui/core';
+import {Button, TextField, Grid, Typography} from '@mui/material';
 
 import { useRouter } from 'next/router';
 
-import {Close, Save} from '@material-ui/icons/';
+import {Close, Save} from '@mui/icons-material';
 
 import fire from '../../config/fire-config';
 
@@ -37,19 +37,6 @@ const AddLotes = () => {
   }
 
 
-  
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
-  }));
-
 
 
   let name = useRef("");
@@ -64,7 +51,6 @@ const AddLotes = () => {
    router.push('/lotes')
  }
   
- const classes = useStyles();
 
     return(
   <div style={{overflow:"auto"}}>
@@ -99,7 +85,6 @@ const AddLotes = () => {
                       type="date"
                       defaultValue="2017-05-24"
                       inputRef={dataPrimLeitura}
-                      className={classes.textField}
                       InputLabelProps={{
                         shrink: true,
                       }}

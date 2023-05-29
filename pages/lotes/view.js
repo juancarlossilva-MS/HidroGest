@@ -1,31 +1,22 @@
 import React, { useState, Component, useEffect } from 'react';
 import { withIronSession } from "next-iron-session";
 import { useRouter } from 'next/router';
-import {Backdrop, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,InputLabel,Collapse,
-    AppBar,Toolbar,    Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,
-    IconButton,Icon, Button, CssBaseline, TextField, FormControlLabel, Checkbox ,Grid,Box, Typography,
-	CardContent, CircularProgress, ButtonBase, CardActionArea, Card
-	} from '@material-ui/core';
-import {Label, Input } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import TablePagination from '@material-ui/core/TablePagination';
-import lotesStyles from './Lotes.module.css'
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import { Modal,    Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper, Button, TextField ,Grid, Typography
+	,Snackbar} from '@mui/material';
+import { Input } from 'reactstrap';
+import TablePagination from '@mui/material/TablePagination';
 
-import {DoneOutline ,DoneAll, Close, MonetizationOn
-    , Edit, Save,YouTube,AssignmentInd, Delete, People,KeyboardArrowDown,KeyboardArrowUp,
-Print, Input as InputButton
-} from '@material-ui/icons/';
-import MenuIcon from '@material-ui/icons/Menu';
+import MuiAlert from '@mui/material/Alert';
+
+import {DoneOutline ,DoneAll, Close, MonetizationOn,Delete } from '@mui/icons-material';
 import Header from "../components/Header";
 import AddLeitura from './leituras/add'
 import EditLote from './edit'
 import fire from '../../config/fire-config';
-import  Link from 'next/link';
 
 import MyBackDrop from '../components/MyBackDrop';
 import ajusteData from '../components/ajusteData';
+import lotesStyles from './Lotes.module.css'
 
 
 import hmacSHA256 from 'crypto-js/hmac-sha256';
@@ -45,18 +36,13 @@ useEffect(() => {
     fire.database()
       .ref('lotes/'+id)
       .once("value").then((snap) => {
-        
-        
         var res = (snap.val())       
-        setName(res.nomeResp);       
-        setDataPrimLeitura(res.dataPrimLeitura);
-        setQuadra(res.quadra);
-        setLote(res.lote);
-        setNumHidrante(res.numHidrante);
-        setCpf(res.cpf);
-
-       
-        
+            setName(res.nomeResp);       
+            setDataPrimLeitura(res.dataPrimLeitura);
+            setQuadra(res.quadra);
+            setLote(res.lote);
+            setNumHidrante(res.numHidrante);
+            setCpf(res.cpf);
       });
      
   }, []);
@@ -76,15 +62,12 @@ useEffect(() => {
       .on("value",(snap) => {
         setRows([]);
         snap.forEach(function(childSnapshot) {
-              
               const data = childSnapshot.key;
               const leitura = childSnapshot.val();
               const res = createDataLeitura( ajusteData(leitura.dataLeitura),leitura.valorLeitura,ajusteData(leitura.vencimento),leitura.totalConsumido, leitura.valorPagar,leitura.jaPago,leitura.txid,leitura.guia);
               setRows(prev=>[res,...prev]);
               setOriginal(prev=>[res,...prev]);
-
           });
-	     
       });
   }, []);
 
@@ -101,60 +84,23 @@ useEffect(() => {
       top: `${top}%`,
       left: `${left}%`,
       transform: `translate(-${top}%, -${left}%)`,
-	  backgroundColor: "#fafafa"
+      backgroundColor: "#fafafa",
+      position: 'absolute',
+      padding: '25px'
     };
   }
   
 
-  const useStyles2 = makeStyles((theme) => ({
-    paper: {
-      position: 'absolute',
-      width: 400,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-	 
-    },
-    paperAdd:{
-      position: 'absolute',
-      width: 400,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    }
-  }));
-  const classes2 = useStyles2();
-  const [modalStyle] = React.useState(getModalStyle);
 
-  const [openmul, setOpenmul] = React.useState(true);
+const [modalStyle] = React.useState(getModalStyle);
+
+const [openmul, setOpenmul] = React.useState(true);
 
 const [rows2, setRows] = useState([]);
 const [original, setOriginal] = useState([]);
 
   
 
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
-  }));
-  
-  const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'groove',
-	  maxWidth: "100%"
-    },
-	
-  },
-  
-});
   
 function createDataLeitura(dataLeitura,valorLeitura,vencimento,totalConsumido,valorPagar,jaPago,txid,guia) {
 
@@ -163,6 +109,19 @@ function createDataLeitura(dataLeitura,valorLeitura,vencimento,totalConsumido,va
   };
 }
 
+const [alertar, setAlertar] = useState(false);
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setAlertar(false);
+};
  
 function ConfirmarDelete(){
 
@@ -170,16 +129,15 @@ function ConfirmarDelete(){
 	  .then(async(e) => {
 			setRows([]);
 
-			fire.database().ref('leituras/'+id+'/'+rowSel.dataLeitura).remove().then(function() {
+			fire.database().ref('leituras/'+id+'/'+rowSel.txid).remove().then(function() {
 						
 					setOpenModal(false);
 				  });
 			
 	  })
 	  .catch((error) => {
-		var errorCode = error.code;
-		var errorMessage = error.message;
-		// ..
+      setOpen(false)
+      setAlertar(true)
 	  });
 }
 function CancelarDelete(){	setOpenModal(false);}
@@ -196,7 +154,7 @@ class ModalAdd extends Component{
     return(
       <div >
         <Modal open={openModalAdd}  >
-           <div style={modalStyle}  className={classes2.paperAdd}>
+           <div style={modalStyle}  className={lotesStyles.paperAdd}>
              <AddLeitura id={id}/>
             </div>
         </Modal>
@@ -212,7 +170,7 @@ class ModalEdit extends Component{
     return(
       <div >
         <Modal open={openModalEdit}  >
-           <div style={modalStyle}  className={classes2.paperAdd}>
+           <div style={modalStyle}  className={lotesStyles.paperAdd}>
              <EditLote id={rowSel.id}/>
             </div>
           </Modal>
@@ -222,46 +180,44 @@ class ModalEdit extends Component{
   }
 }
   
-  class AbrirModalChangeServer extends Component {
-      render(){
 
-          return(
-              <div >
-                <Modal
-                      open={openModal}                     
-                    >
-                     <div style={modalStyle}  className={classes2.paper}>
-                            <h2 id="simple-modal-title">Insira sua senha para confirmar exclusão</h2>
-                            
-							<Input onChange={event => password = (event.target.value)} type="password" name="password" id="examplePassword" placeholder="Insira sua senha" />
-							<br/><br/>
-							<Button
-								type="submit"
-								fullWidth
-								variant="contained"
-								color="primary"
-								className={classes.submit}
-								onClick={ConfirmarDelete}
-							  >
-								CONFIRMAR EXCLUSÃO
-							  </Button><br/><br/>
-							  <Button
-								fullWidth
-								variant="contained" style={{backgroundColor:"red",color:"#fafafa"}}
-								className={classes.submit}
-								onClick={CancelarDelete}
-							  >
-								Cancelar
-							  </Button>
-						  </div>
-                    </Modal>
-              </div>
+class AbrirModalChangeServer extends Component {
+  render(){
 
-          )
+      return(
+          <div style={{padding:10}}>
+            <Modal
+                  open={openModal}                     
+                >
+                 <div style={modalStyle}  className={lotesStyles.paper}>
+                       <Typography variant="h6"> Insira sua senha para confirmar exclusão</Typography>                            
+                        <TextField onChange={event => password = (event.target.value)} fullWidth type="password" name="password" id="examplePassword" placeholder="Insira sua senha" />
+                        <br/><br/>
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          onClick={ConfirmarDelete}
+                          >
+                          CONFIRMAR EXCLUSÃO
+                          </Button><br/><br/>
+                          <Button
+                          fullWidth
+                          variant="contained" style={{backgroundColor:"red",color:"#fafafa"}}
+                          onClick={CancelarDelete}
+                          >
+                          Cancelar
+                          </Button>
+                        </div>
+                </Modal>
+          </div>
 
-      }
+      )
 
   }
+
+}
 
 const [rowSel, setRowSel] = React.useState([]);
 
@@ -271,6 +227,8 @@ const gerarGuia = (row) =>{
 
    rows2.map(r => {
         if(r.dataLeitura < row.dataLeitura){
+            r.guia = '';
+            console.log(r);
             historico.push(r);
         }
         if(historico.length == 6) return;
@@ -302,7 +260,7 @@ const gerarGuia = (row) =>{
     payload = Base64.stringify(Utf8.parse(JSON.stringify(payload)));
     
     const signature = Base64.stringify(hmacSHA256(header+"."+payload, process.env.KEY_JWT));
-    //console.log('token '+ header+"."+payload+"."+signature); return;
+    console.log('token '+ header+"."+payload+"."+signature); return;
     var formData = new FormData();
     formData.append('token', header+"."+payload+"."+signature);
 
@@ -366,8 +324,8 @@ const reimprimirGuia = (row) => {
 const [open, setOpen] = React.useState(false);
 
 function Row(props) {
-  const { row,index } = props;
-  const classesR = useRowStyles();
+  const { row } = props;
+  
 	
   return (
     <React.Fragment>
@@ -401,7 +359,7 @@ function Row(props) {
                         <Button  type="button" color="primary" variant="contained" onClick={() => {gerarGuia(row),setOpen(true)}} startIcon={<MonetizationOn/>}> Gerar Guia</Button>
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                  <Button  type="button" color="secondary" variant="contained" onClick={() => {setOpenModal(true),setRowSel(row)}} startIcon={<Delete />} > Delete</Button>
+                  <Button  type="button" color="error" variant="contained" onClick={() => {setOpenModal(true),setRowSel(row)}} startIcon={<Delete />} > Delete</Button>
                     </Grid>
                 </Grid>
             }
@@ -475,34 +433,6 @@ function SelecionaTodas(){
   
 }
 
-const useStylesCarts = makeStyles((theme) => ({
- 
-  paper: {
-    maxWidth: 525,
-	border: "groove",
-    borderWidth: "7px",
-    borderColor: "black",
-	padding: "5px"
-  },
-  image: {
-    width: 194,
-    height: 194,
-	marginTop: "-31%",
-    marginLeft: "-20%"
-  },
-  img: {
-    margin: 'auto',
-    display: 'block',
-    maxWidth: '62%',
-    maxHeight: '75%',
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
- 
-}));
-const classes = useStylesCarts();
 
 function dataNasc(data){
 	
@@ -518,32 +448,31 @@ function OpenAddLeitura(){ setOpenModalAdd(!openModalAdd)}
 function OpenEditModal(){  setOpenModalEdit(!openModalEdit)}
 
 
-
-const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-	  
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
 function Procurar(e){
+
+
 	var valor = e.target.value;
 	 
 	const filteredRows = original.filter((row) => {
 
 		return (row.dataLeitura+row.vencimento+row.valorLeitura+row.totalConsumido+row.valorPagar).toLowerCase().includes(valor.toLowerCase());
-	  });
-	  setRows(filteredRows);
+  });
+  setRows(filteredRows);
 	
 }
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+const [page, setPage] = React.useState(0);
+const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const classesP = useStylesCarts();
+const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+};
+
+const handleChangeRowsPerPage = (event) => {
+  
+  setRowsPerPage(parseInt(event.target.value, 10));
+  setPage(0);
+};
 
     return(
 	<>
@@ -555,7 +484,7 @@ function Procurar(e){
 
 	  
 		<Header/>
-        <div style={{margin:"8vw 0 0 5%"}}>
+        <div style={{margin:"1vw 0 0 5%"}}>
           <Grid container >  
               <Grid item xs={12} ></Grid>
                     
@@ -617,7 +546,7 @@ function Procurar(e){
 						count={rows2.length}
 						rowsPerPage={rowsPerPage}
 						page={page}
-						onChangePage={handleChangePage}
+						onPageChange={handleChangePage}
 						onChangeRowsPerPage={handleChangeRowsPerPage}
 						/>
               </Grid>
@@ -637,6 +566,14 @@ function Procurar(e){
             {open &&
                 <MyBackDrop />
             }
+            <Snackbar open={alertar} autoHideDuration={6000} onClose={handleClose}>
+              <div>
+
+              <Alert onClose={handleClose} severity="error">
+                Senha incorreta! tente novamente
+              </Alert>
+              </div>
+            </Snackbar>
 		  </>);
 };
 

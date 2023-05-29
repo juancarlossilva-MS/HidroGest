@@ -1,57 +1,58 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import { withStyles } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 import AppBarCollapse from "./AppBarCollapse";
 import  Link from 'next/link';
 
-const styles = {
-  root: {
-    flexGrow: 1
-  },
-  grow: {
-    flexGrow: 1
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20
-  },
-  navigation: {},
-  toggleDrawer: {},
-  appTitle: {}
-};
-
 function Header(props) {
-  const { classes } = props;
+  
+  const styles = {
+    root: {
+      flexGrow: 1
+    },
+    grow: {
+      flexGrow: 1
+    },
+    menuButton: {
+      marginLeft: -12,
+      marginRight: 20
+    },
+    navigation: {},
+    toggleDrawer: {},
+    txtD:{
+      textDecoration:'none'
+    },
+    appTitle: {
+      color:'#fff'
+    }
+  };
+  
   return (
-    <AppBar position="fixed" className={classes.navigation}>
+    <AppBar position="relative" >
       <Toolbar>
         <IconButton
           color="inherit"
           aria-label="Menu"
-          className={classes.toggleDrawer}
+          
         >
           <MenuIcon />
         </IconButton>
-        <Link href="/"><a style={{color:'white', textDecoration:"none"}}><Typography
+        <Link href="/" style={styles.txtD}><Typography
           variant="h6"
           color="inherit"
-          className={classes.appTitle}
+          sx={styles.appTitle}
         >
           HidroGest 
-        </Typography></a></Link>
+        </Typography></Link>
         <AppBarCollapse />
       </Toolbar>
     </AppBar>
   );
 }
 
-Header.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(Header);
+export default (Header);

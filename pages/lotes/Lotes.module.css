@@ -1,3 +1,20 @@
 .icons{
     min-width: 0% !important;
 }
+
+.paper {
+    position: 'absolute';
+    width: 400;
+    border: '2px solid #000';
+    box-shadow: 'theme.shadows[5]';
+    padding: 'theme.spacing(2, 4, 3)';
+   
+  }
+
+.paperAdd{
+    position: 'absolute';
+    width: 700;
+    border: '2px solid #000';
+    box-shadow: 'theme.shadows[5]';
+    padding: 'theme.spacing(2, 4, 3)';
+}

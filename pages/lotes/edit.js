@@ -1,10 +1,10 @@
-import React, { useState, Component, useRef, useEffect } from 'react';
+import React, { useState,  useEffect } from 'react';
 import { withIronSession } from "next-iron-session";
-import {makeStyles,Button, TextField, Grid, Typography} from '@material-ui/core';
+import {Button, TextField, Grid, Typography} from '@mui/material';
 
 import { useRouter } from 'next/router';
 
-import {Close, Save} from '@material-ui/icons/';
+import {Close, Save} from '@mui/icons-material';
 
 import fire from '../../config/fire-config';
 
@@ -68,17 +68,7 @@ useEffect(() => {
 
 
   
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
-  }));
+
 
 
 
@@ -86,7 +76,6 @@ useEffect(() => {
    router.push('/lotes')
  }
   
- const classes = useStyles();
 
     return(
   <div style={{overflow:"auto"}}>
@@ -122,7 +111,7 @@ useEffect(() => {
                       defaultValue="2017-05-24"
                       value={dataPrimLeitura}
                       onChange={e => setDataPrimLeitura(e.target.value)}
-                      className={classes.textField}
+                      
                       InputLabelProps={{
                         shrink: true,
                       }}

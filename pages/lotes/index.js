@@ -1,27 +1,16 @@
 import React, { useState, Component, useEffect } from 'react';
 import { withIronSession } from "next-iron-session";
 import { useRouter } from 'next/router';
-import {Backdrop, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,InputLabel,Collapse,
-    AppBar,Toolbar,    Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,
-    IconButton,Icon, Button, CssBaseline, TextField, FormControlLabel, Checkbox ,Grid,Box, Typography,
-	CardContent, CircularProgress, ButtonBase, CardActionArea, Card
-	} from '@material-ui/core';
-import {Label, Input } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import TablePagination from '@material-ui/core/TablePagination';
+import {  Modal,  Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Button, TextField,Grid, Typography } from '@mui/material';
+import { Input } from 'reactstrap';
+import TablePagination from '@mui/material/TablePagination';
 import lotesStyles from './Lotes.module.css'
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 
-import {Facebook ,DoneAll, Close, ViewModule, Edit, Save,YouTube,AssignmentInd, Delete, People,KeyboardArrowDown,KeyboardArrowUp,
-Print, Input as InputButton
-} from '@material-ui/icons/';
-import MenuIcon from '@material-ui/icons/Menu';
+import {DoneAll, Close, ViewModule, Edit,  Delete, Input as InputButton} from '@mui/icons-material/';
 import Header from "../components/Header";
 import AddLotes from './add'
 import EditLote from './edit'
 import fire from '../../config/fire-config';
-import  Link from 'next/link';
 
 import ajusteData from '../components/ajusteData';
 
@@ -29,6 +18,7 @@ const PrivatePage = ({ user }) => {
  
   
 useEffect(() => {
+    setRows([]);
     fire.database()
       .ref('lotes').orderByChild("lote")
       .on("value",(snap) => {
@@ -46,9 +36,7 @@ useEffect(() => {
       });
   }, []);
 
-  function rand() {
-    return Math.round(Math.random() * 20) - 10;
-  }
+
   
   function getModalStyle() {
     const top = 50 ;
@@ -58,60 +46,22 @@ useEffect(() => {
       top: `${top}%`,
       left: `${left}%`,
       transform: `translate(-${top}%, -${left}%)`,
-	  backgroundColor: "#fafafa"
+	    backgroundColor: "#fafafa",
+      position: 'absolute',
+      padding: '25px'
     };
   }
   
 
-  const useStyles2 = makeStyles((theme) => ({
-    paper: {
-      position: 'absolute',
-      width: 400,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-	 
-    },
-    paperAdd:{
-      position: 'absolute',
-      width: 700,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    }
-  }));
-  const classes2 = useStyles2();
-  const [modalStyle] = React.useState(getModalStyle);
+const [modalStyle] = React.useState(getModalStyle);
 
-  const [openmul, setOpenmul] = React.useState(true);
+const [openmul, setOpenmul] = React.useState(true);
 
 const [rows2, setRows] = useState([]);
 const [original, setOriginal] = useState([]);
 
   
 
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
-  }));
-  
-  const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'groove',
-	  maxWidth: "100%"
-    },
-	
-  },
-  
-});
   
 function createDataLote(nomeResp,lote,quadra,numHidrante,dataPrimLeitura,cpf,id) {
 
@@ -164,7 +114,7 @@ class ModalAdd extends Component{
     return(
       <div >
         <Modal open={openModalAdd}  >
-           <div style={modalStyle}  className={classes2.paperAdd}>
+           <div style={modalStyle}  className={lotesStyles.paperAdd}>
              <AddLotes/>
             </div>
           </Modal>
@@ -180,7 +130,7 @@ class ModalEdit extends Component{
     return(
       <div >
         <Modal open={openModalEdit}  >
-           <div style={modalStyle}  className={classes2.paperAdd}>
+           <div style={modalStyle}  className={lotesStyles.paperAdd}>
              <EditLote id={rowSel.id}/>
             </div>
           </Modal>
@@ -194,21 +144,20 @@ class ModalEdit extends Component{
       render(){
 
           return(
-              <div >
+              <div style={{padding:10}}>
                 <Modal
                       open={openModal}                     
                     >
-                     <div style={modalStyle}  className={classes2.paper}>
-                            <h2 id="simple-modal-title">Insira sua senha para confirmar exclusão</h2>
-                            
-							<Input onChange={event => password = (event.target.value)} type="password" name="password" id="examplePassword" placeholder="Insira sua senha" />
+                     <div style={modalStyle}  className={lotesStyles.paper}>
+                           <Typography variant="h6"> Insira sua senha para confirmar exclusão</Typography>                            
+							<TextField onChange={event => password = (event.target.value)} fullWidth type="password" name="password" id="examplePassword" placeholder="Insira sua senha" />
 							<br/><br/>
 							<Button
 								type="submit"
 								fullWidth
 								variant="contained"
 								color="primary"
-								className={classes.submit}
+								style={classes.submit}
 								onClick={ConfirmarDelete}
 							  >
 								CONFIRMAR EXCLUSÃO
@@ -216,7 +165,6 @@ class ModalEdit extends Component{
 							  <Button
 								fullWidth
 								variant="contained" style={{backgroundColor:"red",color:"#fafafa"}}
-								className={classes.submit}
 								onClick={CancelarDelete}
 							  >
 								Cancelar
@@ -237,9 +185,7 @@ const [rowSel, setRowSel] = React.useState([]);
 
 
 function Row(props) {
-  const { row,index } = props;
-  const [open, setOpen] = React.useState(false);
-  const classesR = useRowStyles();
+  const { row } = props;
 	
   return (
     <React.Fragment>
@@ -326,7 +272,7 @@ function SelecionaTodas(){
   
 }
 
-const useStylesCarts = makeStyles((theme) => ({
+const classes = {
  
   paper: {
     maxWidth: 525,
@@ -348,12 +294,11 @@ const useStylesCarts = makeStyles((theme) => ({
     maxHeight: '75%',
   },
   backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex:  10000,
     color: '#fff',
   },
  
-}));
-const classes = useStylesCarts();
+}
 
 function dataNasc(data){
 	
@@ -393,7 +338,6 @@ function Procurar(e){
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const classesP = useStylesCarts();
 
     return(
 	<>
@@ -405,7 +349,7 @@ function Procurar(e){
 
 	  
 		<Header/>
-        <div style={{margin:"8vw 0 0 5%"}}>
+        <div style={{margin:"1vw 0 0 5%"}}>
           <Grid container >  
               <Grid item xs={12} ></Grid>
                     

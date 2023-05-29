@@ -1,24 +1,21 @@
-import  Link2 from 'next/link';
+
 
 import fire from '../config/fire-config';
 import { useRouter } from 'next/router';
 
-import React, { useEffect, useState} from 'react';
-import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,Link ,Grid,Box, Typography} from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import MyBackDrop from './components/MyBackDrop';
+import React, {useState} from 'react';
+import { Button, CssBaseline, TextField,Link ,Grid,Box, Typography,Container,Snackbar} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import { withIronSession } from "next-iron-session";
+import MuiAlert from '@mui/material/Alert';
 
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import MyBackDrop from './components/MyBackDrop';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit" href="#">
         Your Website
       </Link>{' '}
       {new Date().getFullYear()}
@@ -28,7 +25,7 @@ function Copyright() {
 }
 
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -46,11 +43,10 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-}));
+});
 
 
 function Login(props) {
-  const classes = useStyles();
   const router = useRouter();
   const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
@@ -113,10 +109,10 @@ const onChangeHandler = event => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
-        <img className={classes.img} style={{ maxWidth: '62%', minWidth: '62%',    marginLeft: '8%'}} alt="complex" src="logo assoc.png" />
+      <div className={styles.paper}>
+        <img className={styles.img} style={{ maxWidth: '62%', minWidth: '62%',    marginLeft: '8%'}} alt="complex" src="logo assoc.png" />
         
-        <form className={classes.form} noValidate>
+        <form className={styles.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -147,7 +143,7 @@ const onChangeHandler = event => {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            className={styles.submit}
             onClick={handlerSubmit}
           >
             Entrar
@@ -169,9 +165,12 @@ const onChangeHandler = event => {
             <MyBackDrop />
       }
       <Snackbar open={alertar} autoHideDuration={6000} onClose={handleClose}>
+        <div>
+
         <Alert onClose={handleClose} severity="error">
           Email ou senha incorretos! tente novamente
         </Alert>
+        </div>
       </Snackbar>
     </Container>
     
