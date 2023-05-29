@@ -1,0 +1,34 @@
+{
+  "name": "HIDROGEST",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@material-ui/pickers": "^3.2.10",
+    "@mui-treasury/components": "^1.10.1",
+    "@mui-treasury/styles": "^1.13.1",
+    "@react-pdf/renderer": "^1.6.13",
+    "bootstrap": "^5.0.1",
+    "crypto-js": "^4.1.1",
+    "dom-to-image": "^2.6.0",
+    "firebase": "^8.2.1",
+    "jspdf": "^2.3.1",
+    "next": "^10.1",
+    "next-iron-session": "^4.1.10",
+    "react": "^16.14.0",
+    "react-google-font-loader": "^1.1.0",
+    "react-to-pdf": "0.0.13",
+    "reactstrap": "^8.9.0",
+    "xhr2": "^0.2.1"
+  },
+  "devDependencies": {
+    "react-dom": "^16.14.0"
+  },
+  "license": "MIT",
+  "proxy": "http://localhost:443"
+}
