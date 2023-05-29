@@ -30,9 +30,12 @@ const AddLeitura = ({id}) => {
         } 
             
         var vencimento = new Date();
+        var ano = dataLeitura.substr(0,4)
+        var mes = parseInt(dataLeitura.substr(5,2))
         vencimento.setMonth(dl.getMonth() + 1);
-        let mes = (vencimento.getMonth()+1 < 10 ) ? "0"+(vencimento.getMonth()+1) : vencimento.getMonth()+1;
+        mes = (mes < 10 ) ? "0"+(mes+1) : mes+1;
         vencimento = vencimento.getFullYear() + "-" + mes + "-10";
+
         let totalConsumido = 0;
         let valorPagar = 0;
         valorLeitura = valorLeitura.current.value,
@@ -69,15 +72,7 @@ const AddLeitura = ({id}) => {
                 cancelar();
 
             });
-  
-
-       
-    
   }
-
-
-
-
 
   let valorLeitura = useRef("");
   let dataLeitura = useRef("");

@@ -260,7 +260,7 @@ const gerarGuia = (row) =>{
     payload = Base64.stringify(Utf8.parse(JSON.stringify(payload)));
     
     const signature = Base64.stringify(hmacSHA256(header+"."+payload, process.env.KEY_JWT));
-    console.log('token '+ header+"."+payload+"."+signature); return;
+   // console.log('token '+ header+"."+payload+"."+signature); return;
     var formData = new FormData();
     formData.append('token', header+"."+payload+"."+signature);
 
