@@ -1,10 +1,7 @@
 import React from "react";
-import { withStyles } from "@mui/material/styles";
-import { Menu } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import HomeIcon from "@mui/icons-material/Home";
-
-import { styled } from '@mui/system';
+import { Menu } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import HomeIcon from "@material-ui/icons/Home";
 
 
 const styles = (theme) => ({

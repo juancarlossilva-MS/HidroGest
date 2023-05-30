@@ -1,7 +1,7 @@
 import React from 'react';
 import { withIronSession } from "next-iron-session";
-import { Button,Grid, Typography} from '@mui/material';
-import {Print, ViewModule} from '@mui/icons-material';
+import { Button,Grid, Typography} from '@material-ui/core';
+import {Print, ViewModule} from '@material-ui/icons';
 import  Link from 'next/link';
 import Header from "./components/Header";
 

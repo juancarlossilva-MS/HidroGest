@@ -2,13 +2,13 @@ import React, { useState, Component, useEffect } from 'react';
 import { withIronSession } from "next-iron-session";
 import { useRouter } from 'next/router';
 import { Modal,    Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper, Button, TextField ,Grid, Typography
-	,Snackbar} from '@mui/material';
+	,Snackbar} from '@material-ui/core';
 import { Input } from 'reactstrap';
-import TablePagination from '@mui/material/TablePagination';
+import TablePagination from '@material-ui/core/TablePagination';
 
-import MuiAlert from '@mui/material/Alert';
+import MuiAlert from '@material-ui/lab/Alert';
 
-import {DoneOutline ,DoneAll, Close, MonetizationOn,Delete } from '@mui/icons-material';
+import {DoneOutline ,DoneAll, Close, MonetizationOn,Delete } from '@material-ui/icons';
 import Header from "../components/Header";
 import AddLeitura from './leituras/add'
 import EditLote from './edit'
@@ -358,7 +358,7 @@ function Row(props) {
                         <Button  type="button" color="primary" variant="contained" onClick={() => {gerarGuia(row),setOpen(true)}} startIcon={<MonetizationOn/>}> Gerar Guia</Button>
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                  <Button  type="button" color="error" variant="contained" onClick={() => {setOpenModal(true),setRowSel(row)}} startIcon={<Delete />} > Delete</Button>
+                  <Button  type="button" color="secondary" variant="contained" onClick={() => {setOpenModal(true),setRowSel(row)}} startIcon={<Delete />} > Delete</Button>
                     </Grid>
                 </Grid>
             }
@@ -546,7 +546,7 @@ const handleChangeRowsPerPage = (event) => {
 						rowsPerPage={rowsPerPage}
 						page={page}
 						onPageChange={handleChangePage}
-						onChangeRowsPerPage={handleChangeRowsPerPage}
+						onRowsPerPageChange={handleChangeRowsPerPage}
 						/>
               </Grid>
 

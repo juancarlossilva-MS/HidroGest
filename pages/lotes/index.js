@@ -1,12 +1,12 @@
 import React, { useState, Component, useEffect } from 'react';
 import { withIronSession } from "next-iron-session";
 import { useRouter } from 'next/router';
-import {  Modal,  Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Button, TextField,Grid, Typography } from '@mui/material';
+import {  Modal,  Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Button, TextField,Grid, Typography } from '@material-ui/core';
 import { Input } from 'reactstrap';
-import TablePagination from '@mui/material/TablePagination';
+import TablePagination from '@material-ui/core/TablePagination';
 import lotesStyles from './Lotes.module.css'
 
-import {DoneAll, Close, ViewModule, Edit,  Delete, Input as InputButton} from '@mui/icons-material/';
+import {DoneAll, Close, ViewModule, Edit,  Delete, Input as InputButton} from '@material-ui/icons/';
 import Header from "../components/Header";
 import AddLotes from './add'
 import EditLote from './edit'
@@ -200,9 +200,9 @@ function Row(props) {
         <TableCell align="center">{row.nomeResp}</TableCell>
          <TableCell >
 		<div >
-			<Button className={lotesStyles.icons} type="button" onClick={() => {router.push({pathname:"/lotes/view", query:{id:row.id}})}}><InputButton/></Button>
-			<Button className={lotesStyles.icons} type="button" onClick={() => {setOpenModal(true),setRowSel(row)}}><Delete/></Button>
-			<Button className={lotesStyles.icons} type="button" onClick={() => {OpenEditModal(),setRowSel(row)}}><Edit/></Button>
+			<Button className={lotesStyles.icons} color="primary" type="button" onClick={() => {router.push({pathname:"/lotes/view", query:{id:row.id}})}}><InputButton/></Button>
+			<Button className={lotesStyles.icons} color="secondary" type="button" onClick={() => {setOpenModal(true),setRowSel(row)}}><Delete/></Button>
+			<Button className={lotesStyles.icons} color="primary" type="button" onClick={() => {OpenEditModal(),setRowSel(row)}}><Edit/></Button>
 		</div>
 		</TableCell>
        </TableRow>
@@ -403,7 +403,7 @@ function Procurar(e){
 						rowsPerPage={rowsPerPage}
 						page={page}
 						onChangePage={handleChangePage}
-						onChangeRowsPerPage={handleChangeRowsPerPage}
+						onRowsPerPageChange={handleChangeRowsPerPage}
 						/>
               </Grid>
 

@@ -4,10 +4,10 @@ import fire from '../config/fire-config';
 import { useRouter } from 'next/router';
 
 import React, {useState} from 'react';
-import { Button, CssBaseline, TextField,Link ,Grid,Box, Typography,Container,Snackbar} from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { Button, CssBaseline, TextField,Link ,Grid,Box, Typography,Container,Snackbar} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { withIronSession } from "next-iron-session";
-import MuiAlert from '@mui/material/Alert';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import MyBackDrop from './components/MyBackDrop';
 
