@@ -228,14 +228,13 @@ const gerarGuia = (row) =>{
    rows2.map(r => {
         if(r.dataLeitura < row.dataLeitura){
             r.guia = '';
-            console.log(r);
             historico.push(r);
         }
         if(historico.length == 6) return;
     })
  
     var header = {
-         'alg' : 'HS256',
+        'alg' : 'HS256',
         'typ' : 'JWT'
     }
     header = Base64.stringify(Utf8.parse(JSON.stringify(header)));
