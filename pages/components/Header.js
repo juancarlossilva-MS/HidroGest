@@ -25,7 +25,8 @@ function Header(props) {
     navigation: {},
     toggleDrawer: {},
     txtD:{
-      textDecoration:'none'
+      textDecoration:'none',
+      color:'#fff'
     },
     appTitle: {
       color:'#fff'
@@ -42,13 +43,13 @@ function Header(props) {
         >
           <MenuIcon />
         </IconButton>
-        <Link href="/" style={styles.txtD}><Typography
+        <Link href="/"><a style={styles.txtD}><Typography
           variant="h6"
           color="inherit"
           sx={styles.appTitle}
         >
           HidroGest 
-        </Typography></Link>
+        </Typography></a></Link>
         <AppBarCollapse />
       </Toolbar>
     </AppBar>

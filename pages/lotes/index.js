@@ -316,6 +316,7 @@ function OpenEditModal(){  setOpenModalEdit(!openModalEdit)}
 
 
 const handleChangePage = (event, newPage) => {
+  
     setPage(newPage);
   };
 
@@ -391,7 +392,7 @@ function Procurar(e){
 						</TableHead>
 						<TableBody>
 						  {rows2.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
-							<Row key={row.cpf} row={row} />
+							<Row key={row.numHidrante} row={row} />
 						  ))}
 						</TableBody>
 					  </Table>
@@ -402,7 +403,7 @@ function Procurar(e){
 						count={rows2.length}
 						rowsPerPage={rowsPerPage}
 						page={page}
-						onChangePage={handleChangePage}
+						onPageChange={handleChangePage}
 						onRowsPerPageChange={handleChangeRowsPerPage}
 						/>
               </Grid>
