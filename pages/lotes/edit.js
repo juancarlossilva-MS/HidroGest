@@ -29,7 +29,7 @@ useEffect(() => {
         setDataPrimLeitura(res.dataPrimLeitura);
         setQuadra(res.quadra);
         setLote(res.lote);
-        setNumHidrante(res.numHidrante);
+        setNumHidrometro(res.numHidrometro);
         setCpf(res.cpf);
 
        
@@ -42,7 +42,7 @@ useEffect(() => {
   const [dataPrimLeitura, setDataPrimLeitura] = useState("");
   const [quadra, setQuadra] = useState("");
   const [lote, setLote] = useState("");
-  const [numHidrante, setNumHidrante] = useState("");
+  const [numHidrometro, setNumHidrometro] = useState("");
   const [cpf, setCpf] = useState("");
 
   function salvarLote() {
@@ -58,7 +58,7 @@ useEffect(() => {
                 dataPrimLeitura:dataPrimLeitura,
                 quadra:quadra,
                 lote:lote,
-                numHidrante:numHidrante,
+                numHidrometro:numHidrometro,
                 cpf:cpfCerto
             }); 
       
@@ -130,8 +130,8 @@ useEffect(() => {
                 /></Grid>
               <Grid item xs={12}  sm={5}>
                 
-              <TextField required id="numHidrante" onChange={e => setNumHidrante(e.target.value)} style={{width:"90%" }} fullWidth variant="standard" label="Nº do Hidrante" defaultValue=""
-              value={numHidrante}
+              <TextField required id="numHidrometro" onChange={e => setNumHidrometro(e.target.value)} style={{width:"90%" }} fullWidth variant="standard" label="Nº do Hidrometro" defaultValue=""
+              value={numHidrometro}
               /></Grid>
               <Grid item xs={12} sm={3}  > </Grid> 
 

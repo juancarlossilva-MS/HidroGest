@@ -28,7 +28,7 @@ const AddLotes = () => {
                 dataPrimLeitura:dataPrimLeitura.current.value,
                 quadra:quadra.current.value,
                 lote:lote.current.value,
-                numHidrante:numHidrante.current.value,
+                numHidrometro:numHidrometro.current.value,
                 cpf:cpfCerto
             }); 
       
@@ -43,7 +43,7 @@ const AddLotes = () => {
   let dataPrimLeitura = useRef("");
   let quadra = useRef("");
   let lote = useRef("");
-  let numHidrante = useRef("");
+  let numHidrometro = useRef("");
   let cpf = useRef("");
 
 
@@ -103,8 +103,8 @@ const AddLotes = () => {
                 /></Grid>
               <Grid item xs={12}  sm={5}>
                 
-              <TextField required id="numHidrante" style={{width:"90%" }} fullWidth variant="standard" label="Nº do Hidrante" defaultValue=""
-              inputRef={numHidrante}
+              <TextField required id="numHidrometro" style={{width:"90%" }} fullWidth variant="standard" label="Nº do Hidrometro" defaultValue=""
+              inputRef={numHidrometro}
               /></Grid>
               <Grid item xs={12} sm={3}  > </Grid> 
 

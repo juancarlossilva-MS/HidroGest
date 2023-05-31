@@ -41,7 +41,7 @@ useEffect(() => {
             setDataPrimLeitura(res.dataPrimLeitura);
             setQuadra(res.quadra);
             setLote(res.lote);
-            setNumHidrante(res.numHidrante);
+            setNumHidrometro(res.numHidrometro);
             setCpf(res.cpf);
       });
      
@@ -51,7 +51,7 @@ useEffect(() => {
   const [dataPrimLeitura, setDataPrimLeitura] = useState("");
   const [quadra, setQuadra] = useState("");
   const [lote, setLote] = useState("");
-  const [numHidrante, setNumHidrante] = useState("");
+  const [numHidrometro, setNumHidrometro] = useState("");
   const [cpf, setCpf] = useState("");
 
 
@@ -247,7 +247,7 @@ const gerarGuia = (row) =>{
         'metodo':'criarCobranca',
         'vencimento':row.vencimento,
         'dataLeitura': row.dataLeitura,
-        'numHidrante':numHidrante,
+        'numHidrometro':numHidrometro,
         'quadra':quadra,
         'lote':lote,
         'valorLeitura':row.valorLeitura,
@@ -493,7 +493,7 @@ const handleChangeRowsPerPage = (event) => {
               </Grid>
               <Grid item xs={12} sm={4}></Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="body2">Nº do Hidrante {numHidrante}</Typography>
+                <Typography variant="body2">Nº do Hidrometro {numHidrometro}</Typography>
               </Grid>
               <Grid item xs={12} sm={6}></Grid>
               <Grid item xs={12} sm={6}>

@@ -27,7 +27,7 @@ useEffect(() => {
           
           const id = childSnapshot.key;
           const lote = childSnapshot.val();
-          const res = createDataLote( lote.nomeResp,lote.lote,lote.quadra,lote.numHidrante,ajusteData(lote.dataPrimLeitura), lote.cpf, id);
+          const res = createDataLote( lote.nomeResp,lote.lote,lote.quadra,lote.numHidrometro,ajusteData(lote.dataPrimLeitura), lote.cpf, id);
           setRows(prev=>[res,...prev]);
           setOriginal(prev=>[res,...prev]);
 
@@ -63,13 +63,13 @@ const [original, setOriginal] = useState([]);
   
 
   
-function createDataLote(nomeResp,lote,quadra,numHidrante,dataPrimLeitura,cpf,id) {
+function createDataLote(nomeResp,lote,quadra,numHidrometro,dataPrimLeitura,cpf,id) {
 
   return {
      nomeResp,
     lote,
     quadra,
-    numHidrante,
+    numHidrometro,
     dataPrimLeitura,
     cpf,
     id
@@ -106,7 +106,7 @@ const [openModal, setOpenModal] = React.useState(false);
 const [openModalAdd, setOpenModalAdd] = React.useState(false);
 const [openModalEdit, setOpenModalEdit] = React.useState(false);
 
-const [numHidrante, setNumHidranteToDel] = React.useState();
+const [numHidrometro, setNumHidrometroToDel] = React.useState();
 let password = "";
 
 class ModalAdd extends Component{
@@ -195,7 +195,7 @@ function Row(props) {
 
         <TableCell align="center">{row.quadra}</TableCell>
         <TableCell align="center">{row.lote}</TableCell>
-        <TableCell align="center">{row.numHidrante}</TableCell>
+        <TableCell align="center">{row.numHidrometro}</TableCell>
         <TableCell align="center">{row.dataPrimLeitura}</TableCell>
         <TableCell align="center">{row.nomeResp}</TableCell>
          <TableCell >
@@ -330,7 +330,7 @@ function Procurar(e){
 	var valor = e.target.value;
 	const filteredRows = original.filter((row) => {
 
-		return (row.nomeResp+row.numHidrante+row.lote+row.quadra+row.dataPrimLeitura).toLowerCase().includes(valor.toLowerCase());
+		return (row.nomeResp+row.numHidrometro+row.lote+row.quadra+row.dataPrimLeitura).toLowerCase().includes(valor.toLowerCase());
 	  });
 	  setRows(filteredRows);
 	
@@ -376,14 +376,14 @@ function Procurar(e){
 
               <Grid item xs={8} style={{maxWidth:"100%"}}>
                 <TableContainer style={{backgroundColor:"unset"}} component={Paper}>
-					<TextField label="Digite aqui para procurar pelo Nome do Responsável,quadra, lote ou numero do hidrante"  onChange={(e)=>Procurar(e)} fullWidth/>
+					<TextField label="Digite aqui para procurar pelo Nome do Responsável,quadra, lote ou numero do hidrometro"  onChange={(e)=>Procurar(e)} fullWidth/>
 					  <Table aria-label="collapsible table">
 						  
 						<TableHead>
 						  <TableRow>
 							<TableCell>Quadra</TableCell>
 							<TableCell align="right">Lote</TableCell>
-							<TableCell align="right">Nº do Hidrante</TableCell>
+							<TableCell align="right">Nº do Hidrometro</TableCell>
 							<TableCell align="right">Data da 1ª Leitura</TableCell>
 							<TableCell align="right">Nome do Responsável</TableCell>
 							<TableCell >Ações</TableCell>
@@ -392,7 +392,7 @@ function Procurar(e){
 						</TableHead>
 						<TableBody>
 						  {rows2.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
-							<Row key={row.numHidrante} row={row} />
+							<Row key={row.numHidrometro} row={row} />
 						  ))}
 						</TableBody>
 					  </Table>
