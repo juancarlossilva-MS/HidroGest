@@ -19,7 +19,7 @@ import ajusteData from '../components/ajusteData';
 import lotesStyles from './Lotes.module.css'
 
 
-import hmacSHA256 from 'crypto-js/hmac-sha256';
+import hmacSHA256 from 'crypto-js/hmac-sha256';``
 import Base64 from 'crypto-js/enc-base64';
 import Utf8 from 'crypto-js/enc-utf8'
 
@@ -62,13 +62,28 @@ useEffect(() => {
       .on("value",(snap) => {
         setRows([]);
         snap.forEach(function(childSnapshot) {
-              const data = childSnapshot.key;
+              
               const leitura = childSnapshot.val();
               const res = createDataLeitura( ajusteData(leitura.dataLeitura),leitura.valorLeitura,ajusteData(leitura.vencimento),leitura.totalConsumido, leitura.valorPagar,leitura.jaPago,leitura.txid,leitura.guia);
               setRows(prev=>[res,...prev]);
               setOriginal(prev=>[res,...prev]);
           });
-      });
+    });
+
+    fire.database()
+      .ref('taxas/'+id).orderByChild('data')
+      .on("value",(snap) => {
+        setTaxas([]);
+        snap.forEach(function(childSnapshot) {
+              
+              const taxa = childSnapshot.val();
+              const res = createTaxa( ajusteData(taxa.data),ajusteData(taxa.vencimento),taxa.valor,taxa.jaPago,taxa.txid,taxa.guia);
+              setTaxas(prev=>[res,...prev]);
+          });
+    });
+
+
+
   }, []);
 
 
@@ -97,6 +112,7 @@ const [modalStyle] = React.useState(getModalStyle);
 const [openmul, setOpenmul] = React.useState(true);
 
 const [rows2, setRows] = useState([]);
+const [taxas, setTaxas] = useState([]);
 const [original, setOriginal] = useState([]);
 
   
@@ -106,6 +122,13 @@ function createDataLeitura(dataLeitura,valorLeitura,vencimento,totalConsumido,va
 
   return {
      dataLeitura,valorLeitura,vencimento,totalConsumido,valorPagar,jaPago,txid,guia
+  };
+}
+
+function createTaxa(data,vencimento,valor,jaPago,txid,guia) {
+
+  return {
+      data,vencimento,valor,jaPago,txid,guia
   };
 }
 
@@ -308,6 +331,7 @@ const gerarGuia = (row) =>{
 }
 
 const reimprimirGuia = (row) => {
+
     fetch('data:application/pdf;base64,'+row.guia)
     .then(res => res.blob())
     .then(blob => {
@@ -361,6 +385,42 @@ function Row(props) {
                   <Button  type="button" color="secondary" variant="contained" onClick={() => {setOpenModal(true),setRowSel(row)}} startIcon={<Delete />} > Delete</Button>
                     </Grid>
                 </Grid>
+            }
+		
+		</div>
+		</TableCell>
+       </TableRow>
+    
+    </React.Fragment>
+  );
+}
+
+function RowTaxa(props) {
+  const { row } = props;
+  
+	
+  return (
+    <React.Fragment>
+      <TableRow >
+
+       
+
+        <TableCell align="center">{row.data}</TableCell>
+        <TableCell align="center">{row.vencimento}</TableCell>
+        <TableCell align="center">{row.valor}</TableCell>
+         <TableCell >
+		<div >
+            {row.jaPago ?
+                <DoneOutline/>
+
+            :
+                  <Grid container >                    
+                    
+                  <Grid item xs={12} sm={6}>
+                      <Button  type="button" color="primary" variant="contained" onClick={() => {reimprimirGuia(row),setOpen(true)}} startIcon={<MonetizationOn/>}> Imprimir Guia</Button>
+                  </Grid>
+                  </Grid>
+              
             }
 		
 		</div>
@@ -473,6 +533,19 @@ const handleChangeRowsPerPage = (event) => {
   setPage(0);
 };
 
+const [pageTaxa, setPageTaxa] = React.useState(0);
+const [rowsPerPageTaxa, setRowsPerPageTaxa] = React.useState(5);
+
+const handleChangePageTaxa = (event, newPage) => {
+    setPageTaxa(newPage);
+};
+
+const handleChangeRowsPerPageTaxa = (event) => {
+  
+  setRowsPerPageTaxa(parseInt(event.target.value, 10));
+  setPageTaxa(0);
+};
+
     return(
 	<>
 	 
@@ -504,64 +577,93 @@ const handleChangeRowsPerPage = (event) => {
         </Grid> 
         
         <Grid container style={{marginTop:'5vw'}}> 
-             
-           
-              <Grid item xs={12}></Grid>
-
-              <Grid item xs={12} sm={8}>
+          <Grid item xs={12}></Grid>
+             <Grid item xs={12} sm={8}>
                 <Typography variant="h6">Informações sobre as Leituras</Typography>
               </Grid>
-              <Grid item xs={12} sm={2}>
-                    <Button color="primary" onClick={OpenAddLeitura}>
-                       <Typography variant="h6"> +Leitura</Typography>
-                    </Button>
-               </Grid>
-              <Grid item xs={10} style={{maxWidth:"100%"}}>
-                <TableContainer style={{backgroundColor:"unset"}} component={Paper}>
-					<TextField label="Digite aqui para procurar pela data da leitura, vencimento, o valor, o total consumido e o valor a pagar"  onChange={(e)=>Procurar(e)} fullWidth/>
-					  <Table aria-label="collapsible table">
+            <Grid item xs={12} sm={2}>
+                <Button color="primary" onClick={OpenAddLeitura}>
+                    <Typography variant="h6"> +Leitura</Typography>
+                </Button>
+            </Grid>
+            <Grid item xs={10} style={{maxWidth:"100%"}}>
+              <TableContainer style={{backgroundColor:"unset"}} component={Paper}>
+					      <TextField label="Digite aqui para procurar pela data da leitura, vencimento, o valor, o total consumido e o valor a pagar"  onChange={(e)=>Procurar(e)} fullWidth/>
+					        <Table aria-label="collapsible table">
 						  
-						<TableHead>
-						  <TableRow>
-							<TableCell>Data</TableCell>
-							<TableCell align="right">Vencimento</TableCell>
-							<TableCell align="right">Valor da Leitura</TableCell>
-							<TableCell align="right">Total consumido</TableCell>
-							<TableCell align="right">Valor a pagar</TableCell>
-							<TableCell >Já pago?</TableCell>
+                    <TableHead>
+                      <TableRow>
+                      <TableCell>Data</TableCell>
+                      <TableCell align="right">Vencimento</TableCell>
+                      <TableCell align="right">Valor da Leitura</TableCell>
+                      <TableCell align="right">Total consumido</TableCell>
+                      <TableCell align="right">Valor a pagar</TableCell>
+                      <TableCell >Já pago?</TableCell>
 
-						  </TableRow>
-						</TableHead>
-						<TableBody>
-						  {rows2.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
-							<Row key={row.dataLeitura} row={row} />
-						  ))}
-						</TableBody>
-					  </Table>
-					</TableContainer>
-					<TablePagination
-						rowsPerPageOptions={[5, 10, 25]}
-						component="div"
-						count={rows2.length}
-						rowsPerPage={rowsPerPage}
-						page={page}
-						onPageChange={handleChangePage}
-						onRowsPerPageChange={handleChangeRowsPerPage}
-						/>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {rows2.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
+                      <Row key={row.dataLeitura} row={row} />
+                      ))}
+                    </TableBody>
+					        </Table>
+					    </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={rows2.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Grid>
+          </Grid>
+		
+        <Grid container style={{marginTop:'5vw'}}> 
+          <Grid item xs={12}></Grid>
+             <Grid item xs={12} sm={8}>
+                <Typography variant="h6">Informações sobre a Taxa de Associação</Typography>
               </Grid>
+           
+            <Grid item xs={10} style={{maxWidth:"100%"}}>
+              <TableContainer style={{backgroundColor:"unset"}} component={Paper}>
+					        <Table aria-label="collapsible table">
+						  
+                    <TableHead>
+                      <TableRow>
+                      <TableCell>Data</TableCell>
+                      <TableCell align="right">Vencimento</TableCell>
+                      <TableCell align="right">Valor da Taxa</TableCell>
+                      <TableCell >Já pago?</TableCell>
 
-
-
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {taxas.slice(pageTaxa * rowsPerPageTaxa, pageTaxa * rowsPerPageTaxa + rowsPerPageTaxa).map((taxa,index) => (
+                          <RowTaxa key={taxa.data} row={taxa} />
+                      ))}
+                    </TableBody>
+					        </Table>
+					    </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={taxas.length}
+                rowsPerPage={rowsPerPageTaxa}
+                page={pageTaxa}
+                onPageChange={handleChangePageTaxa}
+                onRowsPerPageChange={handleChangeRowsPerPageTaxa}
+                />
+            </Grid>
           </Grid>
 		
           </div>
 		  <AbrirModalChangeServer/>
             <ModalAdd />
             <ModalEdit />
-            <object data={pdf} type="application/pdf">
-                <div>No PDF viewer available</div>
-            </object>
-
+          
             {open &&
                 <MyBackDrop />
             }

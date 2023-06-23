@@ -6,10 +6,11 @@ import { Input } from 'reactstrap';
 import TablePagination from '@material-ui/core/TablePagination';
 import lotesStyles from './Lotes.module.css'
 
-import {DoneAll, Close, ViewModule, Edit,  Delete, Input as InputButton} from '@material-ui/icons/';
+import {DoneAll, Close, ViewModule, Edit, Money, Delete, Input as InputButton} from '@material-ui/icons/';
 import Header from "../components/Header";
 import AddLotes from './add'
 import EditLote from './edit'
+import GerarTaxa from './taxa'
 import fire from '../../config/fire-config';
 
 import ajusteData from '../components/ajusteData';
@@ -104,6 +105,7 @@ function CancelarDelete(){	setOpenModal(false);}
 
 const [openModal, setOpenModal] = React.useState(false);
 const [openModalAdd, setOpenModalAdd] = React.useState(false);
+const [openModalAddTaxa, setOpenModalAddTaxa] = React.useState(false);
 const [openModalEdit, setOpenModalEdit] = React.useState(false);
 
 const [numHidrometro, setNumHidrometroToDel] = React.useState();
@@ -116,6 +118,20 @@ class ModalAdd extends Component{
         <Modal open={openModalAdd}  >
            <div style={modalStyle}  className={lotesStyles.paperAdd}>
              <AddLotes/>
+            </div>
+          </Modal>
+      </div>
+    )
+
+  }
+}
+class ModalAddTaxa extends Component{
+  render(){
+    return(
+      <div >
+        <Modal open={openModalAddTaxa}  >
+           <div style={modalStyle}  className={lotesStyles.paperAdd}>
+             <GerarTaxa/>
             </div>
           </Modal>
       </div>
@@ -311,6 +327,7 @@ function dataNasc(data){
 
 function OpenCheckBox(){ setOpenmul(!openmul); }
 function OpenAddModal(){ setOpenModalAdd(!openModalAdd)}
+function OpenAddTaxaModal(){ setOpenModalAddTaxa(!openModalAddTaxa)}
 function OpenEditModal(){  setOpenModalEdit(!openModalEdit)}
 
 
@@ -354,7 +371,12 @@ function Procurar(e){
           <Grid container >  
               <Grid item xs={12} ></Grid>
                     
-              <Grid item xs={12} sm={2}></Grid>
+              <Grid item xs={12} sm={2}>
+                    <Button color="primary" onClick={OpenAddTaxaModal}>
+                       <Typography variant="h6"> Gerar Taxa</Typography>
+                       <Money />
+                    </Button>
+              </Grid>
               <Grid item xs={12} sm={3}>
                <Typography variant="h5"> Informações sobre os Lotes</Typography>
               </Grid>
@@ -376,36 +398,36 @@ function Procurar(e){
 
               <Grid item xs={8} style={{maxWidth:"100%"}}>
                 <TableContainer style={{backgroundColor:"unset"}} component={Paper}>
-					<TextField label="Digite aqui para procurar pelo Nome do Responsável,quadra, lote ou numero do hidrometro"  onChange={(e)=>Procurar(e)} fullWidth/>
-					  <Table aria-label="collapsible table">
-						  
-						<TableHead>
-						  <TableRow>
-							<TableCell>Quadra</TableCell>
-							<TableCell align="right">Lote</TableCell>
-							<TableCell align="right">Nº do Hidrometro</TableCell>
-							<TableCell align="right">Data da 1ª Leitura</TableCell>
-							<TableCell align="right">Nome do Responsável</TableCell>
-							<TableCell >Ações</TableCell>
+                    <TextField label="Digite aqui para procurar pelo Nome do Responsável,quadra, lote ou numero do hidrometro"  onChange={(e)=>Procurar(e)} fullWidth/>
+                      <Table aria-label="collapsible table">
+                        
+                      <TableHead>
+                        <TableRow>
+                        <TableCell>Quadra</TableCell>
+                        <TableCell align="right">Lote</TableCell>
+                        <TableCell align="right">Nº do Hidrometro</TableCell>
+                        <TableCell align="right">Data da 1ª Leitura</TableCell>
+                        <TableCell align="right">Nome do Responsável</TableCell>
+                        <TableCell >Ações</TableCell>
 
-						  </TableRow>
-						</TableHead>
-						<TableBody>
-						  {rows2.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
-							<Row key={row.numHidrometro} row={row} />
-						  ))}
-						</TableBody>
-					  </Table>
-					</TableContainer>
-					<TablePagination
-						rowsPerPageOptions={[5, 10, 25]}
-						component="div"
-						count={rows2.length}
-						rowsPerPage={rowsPerPage}
-						page={page}
-						onPageChange={handleChangePage}
-						onRowsPerPageChange={handleChangeRowsPerPage}
-						/>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {rows2.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
+                        <Row key={row.numHidrometro} row={row} />
+                        ))}
+                      </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <TablePagination
+                      rowsPerPageOptions={[5, 10, 25]}
+                      component="div"
+                      count={rows2.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                      />
               </Grid>
 
 
@@ -415,6 +437,7 @@ function Procurar(e){
           </div>
 		  <AbrirModalChangeServer/>
       <ModalAdd />
+      <ModalAddTaxa />
       <ModalEdit />
 		 
 		  </>);
