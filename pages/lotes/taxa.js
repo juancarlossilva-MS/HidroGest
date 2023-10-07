@@ -63,6 +63,10 @@ const GerarTaxa = () => {
     
         fetch('https://btgnews.tv.br/hidrogest/gerarTaxa.php', {     
             method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
             body:JSON.stringify({token:header+"."+payload+"."+signature})
         })
 
